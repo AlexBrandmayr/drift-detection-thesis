@@ -11,10 +11,11 @@ This repository provides:
 
 ## Structure
 
-- **drift_detection_experiments**: 
+- **explorative_analysis**: Contains a jupyter notebook file with the code for desriptive analysis and data visualizations.
 
-- **explorative_analysis**: Contains a single jupyter notebook file with the code for descriptive analysis and visualizations of the data.
-  
+- **drift_detection_experiments**: Contains all code necessary for drift detection experiments.
+  - **concept_drift_detection**: Houses implementations of drift detection methods used in the thesis. These implementations are structured as Python classes, leveraging libraries like `river` and `frouros` designed explicitly for drift detection. Additionally, standard Python libraries such as `numpy` and `scipy.stats` are used where necessary.
+
 - **run_experiment**: Contains files to execute drift detection experiments.
   - **config.json**: Configure experiment parameters, including data paths, result storage locations, and selected drift detection methods.
   - **run_experiment**: Run drift detection experiments, visualize results, and save them. Can also be used to test a method on multiple data series using `series_config.json` and `run_experiment_series`.
