@@ -10,39 +10,41 @@ import pandas as pd
 
 
 class PsiConceptDriftDetector:
-    ''' Concept drift detector based on the Population Stability Index using a sliding window approach.
+    """
+    Concept Drift Detector based on the Population Stability Index (PSI).
 
     Attributes:
-    -----------
-    batch_size : int
-        The size of the sliding window used for detecting concept drifts.
-    threshold : float
-        The threshold value for detecting concept drifts. If the average Population Stability Index between the
-        current window of data and the reference window is greater than this value, a drift is detected.
-    num_bins: int
-        The  number of bins used for creating the histogram
-    reference_data : array-like or None
-        The reference wind data to use for detecting concept drifts.
-    drift_ind : list
-        A list of indices where concept drifts were detected.
-    cnt_drift : int
-        The count of concept drifts detected.
-    result_list : list
-        A list of the distance values calculated for each window of data tested for drift.
+        batch_size (int): Size of the data batches used for drift detection.
+        threshold (float): The threshold value for drift detection.
+        reference_data (array-like): Reference data used for drift detection.
+        drift_ind (list): List to store indices where concept drift is detected.
+        num_bins (int): Number of bins used for computing PSI.
+        cnt_drift (int): Counter to keep track of the number of detected concept drifts.
+        result_list (list): List to store PSI values of drift detection results.
+        distance (float): The PSI value of the most recent drift detection.
 
     Methods:
-    --------
-    detect_drift(new_data):
-        Detects concept drift by computing the average Population Stability Index between the current window of data and
-         the reference window.
-    test_stat(new_data):
-        Calculates the average Population Stability Index between the current window of data and the reference
-        window.
-    detect_drift_window(data_stream, overlapping=False):
-        Detects concept drifts in a sliding window approach using the `detect_drift` method on consecutive windows
-        of data. If `overlapping` is True, the sliding window will overlap between consecutive windows.
-    '''
+        __init__: Initializes the PsiConceptDriftDetector with specified parameters.
+        detect_drift: Detects concept drift in a given batch of new data.
+        _psi: Computes the Population Stability Index (PSI) between two datasets.
+        detect_drift_window: Monitors a data stream for concept drifts using batches of data.
+
+    Reference:
+        - Reference: https://medium.com/model-monitoring-psi/population-stability-index-psi-ab133b0a5d42
+    """
+
     def __init__(self, batch_size, threshold, num_bins):
+        """
+        Initializes the PsiConceptDriftDetector with specified parameters.
+
+        Args:
+            batch_size (int): Size of the data batches used for drift detection.
+            threshold (float): The threshold value for drift detection.
+            num_bins (int): Number of bins used for computing PSI.
+
+        Returns:
+            None
+        """
         self.batch_size = batch_size
         self.threshold = threshold
         self.reference_data = None
@@ -53,6 +55,15 @@ class PsiConceptDriftDetector:
         self.distance = None
 
     def detect_drift(self, new_data):
+        """
+         Detects concept drift in a given batch of new data using the Population Stability Index (PSI).
+
+         Args:
+             new_data (array-like): The new data batch to analyze for concept drift.
+
+         Returns:
+             bool: True if concept drift is detected, False otherwise.
+         """
         if self.reference_data is None:
             self.reference_data = new_data
 
@@ -65,6 +76,18 @@ class PsiConceptDriftDetector:
             return False
 
     def _psi(self, score_initial, score_new, num_bins=10, mode='fixed'):
+        """
+        Computes the Population Stability Index (PSI) between two datasets.
+
+        Args:
+            score_initial (array-like): Initial data batch.
+            score_new (array-like): New data batch.
+            num_bins (int, optional): Number of bins used for computing PSI. Default is 10.
+            mode (str, optional): Mode for binning method ('fixed' or 'quantile'). Default is 'fixed'.
+
+        Returns:
+            array-like: PSI values between the two datasets.
+        """
         eps = 1e-4
 
         # Sort the data
@@ -111,6 +134,19 @@ class PsiConceptDriftDetector:
         return psi_df['psi'].values
 
     def detect_drift_window(self, data_stream, overlapping=False):
+        """
+        Monitors a data stream for concept drifts using batches of data.
+
+        Args:
+            data_stream (array-like): The data stream to monitor for concept drifts.
+            overlapping (bool, optional): If True, allow overlapping batches. Default is False.
+
+        Returns:
+            dict: A dictionary containing the following information:
+                - 'drift_ind' (list): Indices where concept drift is detected.
+                - 'result_list' (list): List of PSI values from drift detection results.
+                - 'cnt_drift' (int): Number of detected concept drifts.
+        """
 
         if overlapping:
 

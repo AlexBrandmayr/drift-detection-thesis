@@ -16,7 +16,7 @@ def plot_drift(df, tag, stream, ind_list, save_path):
     plt.savefig(save_path)
 
 
-def plot_drift_plotly(df, tag, drift_ind, save_path, line=False):
+def plot_drift_plotly(df, tag, drift_ind, save_path, line=False, save_plot=False):
     if line:
         fig = px.line(df, x="Timestamp", y=tag)
     else:
@@ -25,5 +25,7 @@ def plot_drift_plotly(df, tag, drift_ind, save_path, line=False):
     for ind in drift_ind:
         fig.add_vline(x=df['Timestamp'].iloc[ind])
 
-    #fig.write_image(save_path, width=1800, height=500)
-    fig.show()
+    if save_plot:
+        fig.write_image(save_path, width=1800, height=500)
+    else:
+        fig.show()

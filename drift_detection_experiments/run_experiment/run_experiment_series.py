@@ -15,7 +15,7 @@ import sys
 with open('series_config.json') as f:
     config = json.load(f)
 
-sys.path.append("C:/Users/brand/OneDrive/Dokumente/Studium/Master_Thesis_Sicherung/Code_project/drift_detection_experiments/concept_drift_detection")
+sys.path.append(".../drift-detection-thesis/drift_detection_experiments/concept_drift_detection")
 
 tag_list = config['drift_detection']['tag_list']
 df_name = config['drift_detection']['data_frame']

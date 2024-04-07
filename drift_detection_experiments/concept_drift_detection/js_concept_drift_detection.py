@@ -9,42 +9,40 @@ from frouros.detectors.data_drift.batch.distance_based.js import JS
 
 
 class JsConceptDriftDetector:
-    ''' Concept drift detector based on the Jensen Shannon divergence using a sliding window approach.
+    """
+        Concept Drift Detector based on the Jensen-Shannon Divergence.
 
-    Attributes:
-    -----------
-    batch_size : int
-        The size of the sliding window used for detecting concept drifts.
-    dist_threshold : float
-        The threshold value for detecting concept drifts. If the Jensen Shannon divergence distance between the
-        current window of data and the reference window is greater than this value, a drift is detected.
-    reference_data : array-like or None
-        The reference window of data to use for detecting concept drifts. If not provided, the first window of
-        data encountered will be used as the reference.
-    drift_ind : list
-        A list of indices where concept drifts were detected.
-    detector : object
-        The Jensen Shannon distance object from the frouros.unsupervised.distance_based module used to calculate
-        the distance between windows of data.
-    cnt_drift : int
-        The count of concept drifts detected.
-    result_list : list
-        A list of the distance values calculated for each window of data tested for drift.
+        Attributes:
+            batch_size (int): Size of the data batches used for drift detection.
+            threshold (float): The threshold value for drift detection.
+            reference_data (array-like): Reference data used for drift detection.
+            drift_ind (list): List to store indices where concept drift is detected.
+            detector: Instance of JS for computing Jensen-Shannon Divergence.
+            cnt_drift (int): Counter to keep track of the number of detected concept drifts.
+            result_list (list): List to store distances of drift detection results.
+            distance (float): The distance value of the most recent drift detection.
 
-    Methods:
-    --------
-    detect_drift(new_data):
-        Detects concept drift using the Jensen Shannon divergence between the current window of data and the
-        reference window.
-    test_stat(new_data):
-        Calculates the Jensen Shannon divergence distance between the current window of data and the reference
-        window.
-    detect_drift_window(data_stream, overlapping=False):
-        Detects concept drifts in a sliding window approach using the `detect_drift` method on consecutive windows
-        of data. If `overlapping` is True, the sliding window will overlap between consecutive windows.
-    '''
+        Methods:
+            __init__: Initializes the JsConceptDriftDetector with specified parameters.
+            detect_drift: Detects concept drift in a given batch of new data.
+            detect_drift_window: Monitors a data stream for concept drifts using batches of data.
+
+        Reference:
+            - Library: frouros
+            - Reference: https://github.com/IFCA/frouros/blob/main/frouros/detectors/data_drift/batch/distance_based/js.py
+        """
 
     def __init__(self, batch_size, threshold):
+        """
+        Initializes the JsConceptDriftDetector with specified parameters.
+
+        Args:
+            batch_size (int): Size of the data batches used for drift detection.
+            threshold (float): The threshold value for drift detection.
+
+        Returns:
+            None
+        """
         self.batch_size = batch_size
         self.threshold = threshold
         self.reference_data = None
@@ -55,6 +53,15 @@ class JsConceptDriftDetector:
         self.distance = None
 
     def detect_drift(self, new_data):
+        """
+        Detects concept drift in a given batch of new data using the Jensen-Shannon Divergence.
+
+        Args:
+            new_data (array-like): The new data batch to analyze for concept drift.
+
+        Returns:
+            bool: True if concept drift is detected, False otherwise.
+        """
         if self.reference_data is None:
             self.reference_data = new_data
 
@@ -69,6 +76,19 @@ class JsConceptDriftDetector:
             return False
 
     def detect_drift_window(self, data_stream, overlapping=False):
+        """
+        Monitors a data stream for concept drifts using batches of data.
+
+        Args:
+            data_stream (array-like): The data stream to monitor for concept drifts.
+            overlapping (bool, optional): If True, allow overlapping batches. Default is False.
+
+        Returns:
+            dict: A dictionary containing the following information:
+                - 'drift_ind' (list): Indices where concept drift is detected.
+                - 'result_list' (list): List of distances from drift detection results.
+                - 'cnt_drift' (int): Number of detected concept drifts.
+        """
 
         if overlapping:
 

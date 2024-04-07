@@ -9,8 +9,40 @@ from frouros.detectors.data_drift.batch.distance_based import MMD
 
 
 class MmdConceptDriftDetector:
+    """
+    Concept Drift Detector based on the Maximum Mean Discrepancy.
+
+    Attributes:
+        batch_size (int): Size of the data batches used for drift detection.
+        threshold (float): The threshold value for drift detection.
+        reference_data (array-like): Reference data used for drift detection.
+        drift_ind (list): List to store indices where concept drift is detected.
+        detector: Instance of MMD for computing Maximum Mean Discrepancy.
+        cnt_drift (int): Counter to keep track of the number of detected concept drifts.
+        result_list (list): List to store distances of drift detection results.
+        distance (float): The distance value of the most recent drift detection.
+
+    Methods:
+        __init__: Initializes the MmdConceptDriftDetector with specified parameters.
+        detect_drift: Detects concept drift in a given batch of new data.
+        detect_drift_window: Monitors a data stream for concept drifts using batches of data.
+
+    Reference:
+        - Library: frouros
+        - Reference: https://github.com/IFCA/frouros/blob/main/frouros/detectors/data_drift/batch/distance_based/mmd.py
+    """
 
     def __init__(self, batch_size, threshold):
+        """
+        Initializes the MmdConceptDriftDetector with specified parameters.
+
+        Args:
+            batch_size (int): Size of the data batches used for drift detection.
+            threshold (float): The threshold value for drift detection.
+
+        Returns:
+            None
+        """
         self.batch_size = batch_size
         self.threshold = threshold
         self.reference_data = None
@@ -21,6 +53,15 @@ class MmdConceptDriftDetector:
         self.distance = None
 
     def detect_drift(self, new_data):
+        """
+        Detects concept drift in a given batch of new data using the Maximum Mean Discrepancy.
+
+        Args:
+            new_data (array-like): The new data batch to analyze for concept drift.
+
+        Returns:
+            bool: True if concept drift is detected, False otherwise.
+        """
         if self.reference_data is None:
             self.reference_data = new_data
 
@@ -35,6 +76,19 @@ class MmdConceptDriftDetector:
             return False
 
     def detect_drift_window(self, data_stream, overlapping=False):
+        """
+        Monitors a data stream for concept drifts using batches of data.
+
+        Args:
+            data_stream (array-like): The data stream to monitor for concept drifts.
+            overlapping (bool, optional): If True, allow overlapping batches. Default is False.
+
+        Returns:
+            dict: A dictionary containing the following information:
+                - 'drift_ind' (list): Indices where concept drift is detected.
+                - 'result_list' (list): List of distances from drift detection results.
+                - 'cnt_drift' (int): Number of detected concept drifts.
+        """
 
         if overlapping:
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------------------------------------------------------
 # Description:
-#  File to run a series of drift detection experiments on a dataframe and save the results
+# File to run a series of drift detection experiments to compute the number of true positive, false positive and false
+# negatives  on a dataframe and save the results
 # -----------------------------------------------------------------------------------------------------------
 import pandas as pd
 import numpy as np
@@ -18,7 +19,7 @@ label_df = pd.read_pickle(label_path)
 with open('series_config.json') as f:
     config = json.load(f)
 
-sys.path.append("C:/Users/brand/OneDrive/Dokumente/Studium/Master_Thesis_Sicherung/Code_project/drift_detection_experiments/concept_drift_detection")
+sys.path.append(".../drift-detection-thesis/drift_detection_experiments/concept_drift_detection")
 
 tag_list = config['drift_detection']['tag_list']
 df_name = config['drift_detection']['data_frame']

@@ -8,24 +8,24 @@ import pandas as pd
 import pickle
 
 DATA_SET = "df_drift_EI3"
-TAG_LIST = ["130.03.SCU231001.EI",
- "130.03.SCU233002.EI",
- "130.03.SCU233010.EI"]
+TAG_LIST = ["motor_current8.1",
+            "motor_current8.2",
+             "motor_current8.3"]
 DRIFT_SEGMENTS = {
-    "130.03.SCU231001.EI": {
+    "motor_current8.1": {
         "start_points": ['2020-11-01'],
         "end_points": ['2020-12-01']
     },
-    "130.03.SCU233002.EI": {
+    "motor_current8.2": {
         "start_points": ['2022-06-28'],
         "end_points": ['2022-07-28']
     },
-    "130.03.SCU233010.EI": {
+    "motor_current8.3": {
         "start_points": ['2022-09-25'],
         "end_points": ['2022-10-25']
     }
 }
-SAVE_PATH = 'labels3_df'
+SAVE_PATH = '/path/to/your/data/labels3_df'
 
 df = pd.read_pickle(DATA_SET)
 df['Timestamp'] = pd.to_datetime(df['Timestamp'])

@@ -1,24 +1,22 @@
 {
     "drift_detection": {
-        "tag": "130.08.SCU80067.EI",
-        "data_frame": "C:/Users/brand/OneDrive/Dokumente/Studium/Master_Thesis_Sicherung/Code_project/drift_detection_experiments/data/df_drift_EI8",
+        "tag": "motor_current8.1",
+        "data_frame": "/path/to/your/data/df_drift_EI8",
         "reshape_stream":  false,
         "create_report": true,
         "create_plot": true,
-        "report_path": "C:/Users/brand/OneDrive/Dokumente/Studium/Master_Thesis_Sicherung/Code_project/experiment_results/",
+        "report_path": "/path/to/your/experiment_results/",
         "report_name": "PSI_test1.txt",
-        "plot_path": "C:/Users/brand/OneDrive/Dokumente/Studium/Master_Thesis_Sicherung/Code_project/experiment_results/",
+        "plot_path": "/path/to/your/experiment_results/",
         "plot_name": "psi1",
       "line_plot": true
 
     },
   "detector": {
-    "class": "adwin_concept_drift_detection.AdwinConceptDriftDetector",
+    "class": "js_concept_drift_detection.JsConceptDriftDetector",
     "params": {
-      "significance_level": 0.0000000002,
-      "clock": 32,
-      "max_buckets": 5,
-      "min_window_length": 5
+      "batch_size": 5000,
+      "threshold": 0.8
     }
 }}
 

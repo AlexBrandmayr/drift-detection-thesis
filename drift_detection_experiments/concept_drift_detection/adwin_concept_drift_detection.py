@@ -1,49 +1,66 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python#!/usr/bin/env python3
 # -----------------------------------------------------------------------------------------------------------
 # Description:
-# This file contains an implementation of the ADWIN concept drift detector based on the python river library
+# This file contains an implementation of the Adaptive Windowing concept drift detector (ADWIN)
+# library: river
+# reference: https://riverml.xyz/dev/api/drift/ADWIN/
 # -------------------------------------------------------------------------------------------------------
 from river.drift import ADWIN
 
 
 class AdwinConceptDriftDetector:
-    """ ADWIN Concept drift detector
+    """
+    Implementation of the Adaptive Windowing (ADWIN) concept drift detector.
 
-     Attributes:
-         self.adwin
-         self.drift_ind (list)   list of indices of detected drifts
-         self.cnt_drift (int)    number of detected drifts
-         self.result_list (list)  list of estimated means
+    Attributes:
+        adwin: ADWIN object from the river library initialized with specified parameters.
+        drift_ind (list): List to store indices where concept drift is detected.
+        cnt_drift (int): Counter to keep track of the number of detected concept drifts.
+        result_list (list): List to store ADWIN estimations at the time of drift detection.
 
-    Methods
-         detect_drift_window       performs the drift detection on datastream
-         """
+    Methods:
+        __init__: Initializes the AdwinConceptDriftDetector with specified parameters.
+        detect_drift_window: Detects concept drifts in the given data stream.
 
-    def __init__(self, significance_level,clock, min_window_length,grace_period):
+    Reference:
+    - Library: river
+    - Reference: https://riverml.xyz/dev/api/drift/ADWIN/
+    """
+
+    def __init__(self, significance_level, clock, min_window_length, grace_period):
         """
-        Initialize a new instance of the class.
+        Initializes the AdwinConceptDriftDetector with specified parameters.
 
         Args:
-            significance_level (float): significance level  of the ADWIN  concept drift detector.
+            significance_level (float): The statistical significance level for drift detection.
+            clock (int): The maximum number of elements stored in the window.
+            min_window_length (int): The minimum number of instances that must be observed before drift detection begins
+            grace_period (int): The number of instances to observe before starting to detect drifts.
 
         Returns:
             None
         """
-        self.adwin = ADWIN(delta=significance_level,clock=clock, min_window_length=min_window_length,grace_period=grace_period)
+
+        self.adwin = ADWIN(delta=significance_level, clock=clock, min_window_length=min_window_length,
+                           grace_period=grace_period)
         self.drift_ind = []
         self.cnt_drift = 0
         self.result_list = []
 
     def detect_drift_window(self, data_stream):
         """
-        Initialize a new instance of the class.
+        Detects concept drifts in the given data stream.
 
         Args:
-            data_stream (np.array): Data stream to perform the drift detection on
+            data_stream (iterable): The input data stream to monitor for concept drifts.
 
         Returns:
-           dictionary of drift indices , estimation results and counted drifts
+            dict: A dictionary containing the following information:
+                - 'drift_ind' (list): Indices where concept drift is detected.
+                - 'result_list' (list): ADWIN estimations at the time of drift detection.
+                - 'cnt_drift' (int): Number of detected concept drifts.
         """
+
         for i, val in enumerate(data_stream):
 
             _ = self.adwin.update(val)

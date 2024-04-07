@@ -51,7 +51,7 @@ def plot_timeseries_with_color(x_axis, timeseries, color_stream, name,save_plot=
 
 
 DATA_SET = "df_drift_EI8"
-TAG = "130.08.EU8020.EI"
+TAG = "motor_current8.1"
 DRIFT_START_POINTS = ['2020-03-1','2020-07-25']
 DRIFT_END_POINTS = ['2020-04-8','2020-08-20']
 SAVE_PATH = None
