@@ -11,6 +11,8 @@ This repository provides:
 
 ## Structure
 
+- **explorative_analysis**: Contains a jupyter notebook file with the code for desriptive analysis and data visualizations.
+
 - **drift_detection_experiments**: Contains all code necessary for drift detection experiments.
   - **concept_drift_detection**: Houses implementations of drift detection methods used in the thesis. These implementations are structured as Python classes, leveraging libraries like `river` and `frouros` designed explicitly for drift detection. Additionally, standard Python libraries such as `numpy` and `scipy.stats` are used where necessary.
 
