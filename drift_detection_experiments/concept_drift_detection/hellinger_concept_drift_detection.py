@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------------------------------------------------------
 # Description:
-# This python file conatains a univarate concept drift detector based on the hellinger distance
+# This python file contains a univarate concept drift detector based on the hellinger distance
 # library: frouros
 # reference :https://github.com/IFCA/frouros/blob/main/frouros/detectors/
 # data_drift/batch/distance_based/hellinger_distance.py
